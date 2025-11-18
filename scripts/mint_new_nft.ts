@@ -2,7 +2,6 @@ import {
   createV1,
   mplTokenMetadata,
   TokenStandard,
-  createNft,
 } from "@metaplex-foundation/mpl-token-metadata";
 import {
   createGenericFile,
@@ -14,7 +13,6 @@ import {
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { irysUploader } from "@metaplex-foundation/umi-uploader-irys";
 import fs from "fs";
-import path from "path";
 import { Keypair as Web3Keypair, clusterApiUrl } from "@solana/web3.js";
 
 // Load wallet keypair
@@ -75,11 +73,12 @@ const mintNft = async () => {
 
   const nftSigner = generateSigner(umi);
 
-  const tx = await createNft(umi, {
+  const tx = await createV1(umi, {
     mint: nftSigner,
     sellerFeeBasisPoints: percentAmount(5.0),
     name: metadata.name,
     uri: metadataUri,
+    tokenStandard: TokenStandard.NonFungible,
   }).sendAndConfirm(umi);
 
   console.log("\n✅ NFT Minted Successfully!");
