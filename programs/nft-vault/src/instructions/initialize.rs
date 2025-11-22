@@ -5,28 +5,53 @@ use anchor_spl::{
 };
 
 #[derive(Accounts)]
-#[instruction(a_to_b_amount: u64,b_to_a_amount:u64,side_b:Pubkey)]
-pub struct Initialize_vault<'info> {
-    #[account(mut)]
-    pub side_a: Pubkey,
+#[instruction(id: u64, side_a_amount: u64)]
+pub struct MakeOffer<'info> {
 
+    // Maker (side A)
     #[account(mut)]
-    pub side_b: Pubkey,
+    pub side_a: Signer<'info>,
 
+    // Mint of the NFT A is depositing
+    pub side_a_mint_account: InterfaceAccount<'info, Mint>,
+
+    // A's ATA holding the NFT that will be deposited
     #[account(
-        init_if_needed,
+        mut,
+        associated_token::mint = side_a_mint_account,
+        associated_token::authority = side_a
+    )]
+    pub side_a_mint_ata: InterfaceAccount<'info, TokenAccount>,
+
+    // Offer PDA
+    #[account(
+        init,
+        payer = side_a,
+        space = 8 + NftOffer::INIT_SPACE,
+        seeds = [b"nft_offer", &id.to_le_bytes()],
+        bump
+    )]
+    pub offer: Account<'info, NftOffer>,
+
+    // Escrow ATA owned by the offer PDA
+    #[account(
+        init,
         payer = side_a,
         associated_token::mint = side_a_mint_account,
-        associated_token::authority = side_a,
-        associated_token::program = token_program,
-    )] //init my escrow account_side a
-    pub ata_side_a: InterfaceAccount<'info, TokenAccount>
+        associated_token::authority = offer
+    )]
+    pub escrow_a_ata: InterfaceAccount<'info, TokenAccount>,
 
+    // programs
+    pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, TokenInterface>,
     pub associated_token_program: Program<'info, AssociatedToken>,
 
 }
 
-fn _initialize_nft_vault(ctx: Context<Initialize_vault>, side_a_amount:u64, side_b_amount:u64, side_b:Pubkey) -> Result () {
-    let escrow = ctx.
+pub fn make_offer(ctx: Context<Make_offer>, side_a_amount:u64, id:u64 ) -> Result<()> {
+    let escrow = &mut ctx.accounts.escrow; //still to be completed
+
+    Ok(())
 
 }

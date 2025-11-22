@@ -2,9 +2,9 @@ use::anchor_lang::prelude::*;
 
 //here I am saving all the info necesary to make an offer.
 
-#[Account]
-#[deriveInitSpace]
-pub struct Nft_Offer {
+#[account]
+#[derive(InitSpace)]
+pub struct NftOffer {
     pub id: u64, // it is an identifier of the offer so It can be found afterwards
     pub side_a: Pubkey, //mades the offer
     pub side_b: Pubkey,
@@ -15,8 +15,8 @@ pub struct Nft_Offer {
     pub side_a_mint_account: Pubkey, // the mint account where the nft is from side a
     pub side_b_mint_account: Pubkey,
 
-    pub offer_bump: u68,
-    pub escrow_bump_side_a: u68,
-    pub escrow_bump_side_b: u68
+    pub offer_bump: u8,
+    pub escrow_bump_side_a: u8,
+    pub escrow_bump_side_b: u8,
 
 }

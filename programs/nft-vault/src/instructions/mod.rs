@@ -1,6 +1,7 @@
 use anchor_lang::prelude::*;
 
 mod deposit;
-mod toogle_lock;
+mod complete;
+mod initialize;
 pub use deposit::*;
-pub use toogle_lock::*;
+pub use initialize::*;

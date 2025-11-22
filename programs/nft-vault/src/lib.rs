@@ -1,6 +1,11 @@
 use anchor_lang::prelude::*;
 
-use instruction::*;
+use instructions::*;
+
+pub mod state;
+pub mod instructions;
+
+
 
 
 declare_id!("Dg14CmLBnFAtFe5oH7YpQoTwaiuUDsv662CSRxnQWfRZ");
@@ -9,8 +14,8 @@ declare_id!("Dg14CmLBnFAtFe5oH7YpQoTwaiuUDsv662CSRxnQWfRZ");
 pub mod nft_vault {
     use super::*;
 
-    pub fn initialize(ctx: Context<_initialize_nft_vault>, side_a_amount:u64) -> Result<()> {
-
+    pub fn initialize(ctx: Context<_initialize_nft_vault>, side_a_amount:u64, id:u64) -> Result<()> {
+        initialize::make_offer(context, side_a_amount, id)
         
     }
 }
